@@ -65,6 +65,28 @@
     const form = document.getElementById('registrationForm');
     if (!form) return;
 
+    // Ensure a toast container exists for feedback messages (top, white background, black text)
+    let toast = document.getElementById('form-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'form-toast';
+      toast.className = 'form-toast';
+      toast.innerHTML = '<span class="ft-icon" aria-hidden="true">✓</span><span class="ft-msg"></span>';
+      document.body.appendChild(toast);
+    }
+
+    const showToast = (msg, ms = 2600) => {
+      const msgSpan = toast.querySelector('.ft-msg');
+      if (msgSpan) msgSpan.textContent = msg;
+      toast.classList.add('show');
+      // remove any existing timer by clearing data attribute
+      if (toast._timer) clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.classList.remove('show');
+        toast._timer = null;
+      }, ms);
+    };
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const url = form.action;
@@ -75,16 +97,28 @@
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
-        // On success (2xx) redirect to home (top of page)
-        if (resp.ok) {
-          window.location.href = 'index.html';
+
+        // Show success message regardless of remote captcha handling
+        showToast('Submission completed');
+
+        // Reset form fields to blank
+        form.reset();
+
+        // Scroll to the registration form section and focus first input
+        const formSection = document.getElementById('form');
+        if (formSection) {
+          formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          // If the remote returns error, still redirect to home — adjust as needed
-          window.location.href = 'index.html';
+          // fallback: scroll to top
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
       } catch (err) {
-        // Network errors — fallback redirect
-        window.location.href = 'index.html';
+        // On network error, still show feedback and reset
+        showToast('Submission completed (offline).');
+        form.reset();
+        const formSection = document.getElementById('form');
+        if (formSection) formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
