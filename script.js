@@ -58,3 +58,34 @@
         });
       });
     })();
+
+// Handle registration form submission via Fetch and redirect to home
+(function(){
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registrationForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = form.action;
+      const formData = new FormData(form);
+      try {
+        const resp = await fetch(url, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+        // On success (2xx) redirect to home (top of page)
+        if (resp.ok) {
+          window.location.href = 'index.html';
+        } else {
+          // If the remote returns error, still redirect to home — adjust as needed
+          window.location.href = 'index.html';
+        }
+      } catch (err) {
+        // Network errors — fallback redirect
+        window.location.href = 'index.html';
+      }
+    });
+  });
+})();
