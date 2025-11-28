@@ -192,25 +192,37 @@
   <!-- Registration Form -->
   <section class="form-section " id="form">
     <h2>Register Now</h2>
-    <form action="https://formspree.io/f/{form_id}" method="post">
+    <form action="https://formspree.io/f/xrbwaraq" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+
       <div class="input-group">
-        <label>Name</label>
-        <input type="text" placeholder="Enter your name" required />
+        <label>Name
+          <input type="text" name="name" placeholder="Enter your name" required />
+        </label>
       </div>
 
       <div class="input-group">
-        <label>Email</label>
-        <input type="email" placeholder="Enter your email" required />
+        <label>Email
+          <input type="email" name="email" placeholder="Enter your email" required />
+        </label>
       </div>
 
       <div class="input-group">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="Enter your phone number" required />
+        <label>Phone Number
+          <input type="tel" name="phone" placeholder="Enter your phone number" />
+        </label>
       </div>
 
       <div class="input-group">
-        <label>City</label>
-        <input type="text" placeholder="Enter your city" required />
+        <label>City
+          <input type="text" name="city" placeholder="Enter your city" />
+        </label>
+      </div>
+
+      <div class="input-group">
+        <label>Your message
+          <textarea name="message" placeholder="Type your message (optional)"></textarea>
+        </label>
       </div>
 
       <button type="submit" class="btn">Submit</button>
